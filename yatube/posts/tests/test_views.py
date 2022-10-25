@@ -149,7 +149,7 @@ class PostViewTests(TestCase):
     def test_profile_page_show_correct_context(self):
         """Шаблон posts/profile.html сформирован с правильным контекстом."""
         author = self.post.author
-        response = self.guest_client.get(
+        response = self.authorized_client.get(
             reverse('posts:profile', kwargs={'username': author})
         )
         first_object = response.context['page_obj'].object_list[0]

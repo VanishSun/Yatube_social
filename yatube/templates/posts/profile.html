@@ -5,6 +5,7 @@
   Профайл пользователя {{ author.get_full_name }}
 {% endblock%}
 {% block content %}
+<div class="container py-5">  
   <div class="mb-5">        
     <h1>Все посты пользователя {{ author.get_full_name }} </h1>
     <h3>Всего постов: {{ all_posts }} </h3>
@@ -34,4 +35,5 @@
     </article>       
     {% include 'posts/includes/paginator.html' %}
   </div>
+</div>
 {% endblock %}

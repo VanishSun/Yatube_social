@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 from http import HTTPStatus
 from posts.models import Post, Group
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -19,7 +20,6 @@ class PostsURLTests(TestCase):
         cls.post = Post.objects.create(
             author=cls.user,
             text='Тестовый пост',
-            id=1,
         )
 
     def setUp(self):
@@ -33,14 +33,29 @@ class PostsURLTests(TestCase):
     def test_urls_exist_status_for_guest_user(self):
         """Проверка доступности страницы address для гостя."""
         urls_list = {
-            '/': HTTPStatus.OK,
-            '/group/test_slug/': HTTPStatus.OK,
-            '/profile/Lev/': HTTPStatus.OK,
-            '/posts/1/': HTTPStatus.OK,
+            reverse('posts:index'): HTTPStatus.OK,
+            reverse(
+                'posts:group_list',
+                kwargs={'slug': self.group.slug}
+            ): HTTPStatus.OK,
+            reverse(
+                'posts:profile',
+                kwargs={'username': self.user.username}
+            ): HTTPStatus.OK,
+            reverse(
+                'posts:post_detail',
+                kwargs={'post_id': self.post.pk}
+            ): HTTPStatus.OK,
+            reverse(
+                'posts:post_edit',
+                kwargs={'post_id': self.post.pk}
+            ): HTTPStatus.FOUND,
+            reverse(
+                'posts:add_comment',
+                kwargs={'post_id': self.post.pk}
+            ): HTTPStatus.FOUND,
             '/create/': HTTPStatus.FOUND,
-            '/posts/1/edit/': HTTPStatus.FOUND,
             '/unexpected/': HTTPStatus.NOT_FOUND,
-            '/posts/1/comment/': HTTPStatus.NOT_FOUND,
         }
         for address, status_code in urls_list.items():
             with self.subTest(address=address):

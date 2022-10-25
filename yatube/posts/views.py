@@ -31,7 +31,7 @@ def profile(request, username):
     posts = author.posts.all()
     all_posts = posts.count()
     following = Follow.objects.filter(
-        user=request.user.id, author__following__author=author
+        user=request.user, author=author
     )
     page_obj = paginations(request, posts)
     context = {
@@ -115,6 +115,10 @@ def add_comment(request, post_id):
 def follow_index(request):
     posts = Post.objects.select_related('author', 'group').filter(
         author__following__user=request.user)
+    # я так и не понял как тут заменить author__following__user на user
+    # если ставить user - страница ломается, т.к. у модели Post
+    # нет user поля
+    # как по другому без __ описать я не придумал
     page_obj = paginations(request, posts)
     context = {
         'page_obj': page_obj,
@@ -126,7 +130,7 @@ def follow_index(request):
 def profile_follow(request, username):
     author = get_object_or_404(User, username=username)
     follower = request.user
-    if follower != author and follower != author.follower:
+    if follower != author:
         Follow.objects.get_or_create(user=follower, author=author)
     return redirect('posts:profile', username)
 

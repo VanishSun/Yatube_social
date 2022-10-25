@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase, override_settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
+from http import HTTPStatus
 from posts.models import Post, Group, Comment
 
 
@@ -114,6 +115,8 @@ class PostFormTests(TestCase):
         )
         self.assertEqual(post.text, form_data['text'])
         self.assertEqual(post.author, PostFormTests.user)
+        # нет, тут все верно. я сравниваю с автором - а self.user - 
+        # у меня другой залогиненый пользователь. строка 43
         self.assertEqual(post.image, 'posts/small_1.gif')
 
     def test_edit_post_form_with_new_group(self):
@@ -137,7 +140,7 @@ class PostFormTests(TestCase):
             follow=True
         )
         self.assertEqual(Post.objects.count(), posts_count)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertFormError(
             response,
             'form',
