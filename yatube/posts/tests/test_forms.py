@@ -115,7 +115,7 @@ class PostFormTests(TestCase):
         )
         self.assertEqual(post.text, form_data['text'])
         self.assertEqual(post.author, PostFormTests.user)
-        # нет, тут все верно. я сравниваю с автором - а self.user - 
+        # нет, тут все верно. я сравниваю с автором - а self.user -
         # у меня другой залогиненый пользователь. строка 43
         self.assertEqual(post.image, 'posts/small_1.gif')
 
