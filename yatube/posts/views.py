@@ -121,7 +121,6 @@ def follow_index(request):
     # я так и не понял как тут заменить author__following__user на user
     # если ставить user - страница ломается, т.к. у модели Post
     # нет user поля
-    # как по другому без __ описать я не придумал
     page_obj = paginations(request, posts)
     context = {
         'page_obj': page_obj,

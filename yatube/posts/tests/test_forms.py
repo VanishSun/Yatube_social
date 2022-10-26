@@ -40,9 +40,9 @@ class PostFormTests(TestCase):
     def setUp(self):
         self.author_client = Client()
         self.author_client.force_login(PostFormTests.user)
-        self.user = User.objects.create_user(username='HasNoName')
+        self.user_no_author = User.objects.create_user(username='HasNoName')
         self.authorized_client = Client()
-        self.authorized_client.force_login(self.user)
+        self.authorized_client.force_login(self.user_no_author)
 
     def test_create_post_form(self):
         """Валидная форма создает запись в Post."""
@@ -114,7 +114,13 @@ class PostFormTests(TestCase):
             post.group.pk, self.group.pk
         )
         self.assertEqual(post.text, form_data['text'])
-        self.assertEqual(post.author, PostFormTests.user)
+        # В данном случае у меня был self.user переопределен в строке 43,
+        # поэтому я не мог через self.user обращаться к cls.user в setUpClass()
+        # создавался пост автором Lev, а self.user был HasNoName
+        # чтобы этого измежать я пепеназвал self.user в self.user_no_author
+        # до этого тест падал: AssertionError: <User: Lev> != <User: HasNoName>
+        self.assertEqual(post.author, self.user)
+        # ПРЕДЫДУЩИЙ КОММЕНТ:
         # нет, тут все верно. я сравниваю с автором - а self.user -
         # у меня другой залогиненый пользователь. строка 43
         self.assertEqual(post.image, 'posts/small_1.gif')
@@ -170,4 +176,4 @@ class PostFormTests(TestCase):
         ))
         self.assertEqual(Comment.objects.count(), comments_count + 1)
         self.assertEqual(comment.text, form_data['text'])
-        self.assertEqual(comment.author, self.user)
+        self.assertEqual(comment.author, self.user_no_author)

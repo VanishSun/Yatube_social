@@ -90,3 +90,9 @@ class Follow(CreatedModel):
     class Meta:
         verbose_name = 'Подписчик'
         verbose_name_plural = 'Подписчики'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'],
+                name='unique_following_constraint'
+            )
+        ]

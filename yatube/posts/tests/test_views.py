@@ -72,7 +72,6 @@ class PostViewTests(TestCase):
         cls.post = Post.objects.create(
             author=cls.user,
             text='Тестовый пост',
-            id=1,
             group=cls.group,
             image=uploaded
         )
@@ -212,7 +211,6 @@ class PostViewTests(TestCase):
             group=self.group
         )
         response_1 = self.authorized_client.get(reverse('posts:index'))
-        self.assertTrue(Post.objects.get(pk=post.id))
         Post.objects.get(pk=post.id).delete()
         response_2 = self.authorized_client.get(reverse('posts:index'))
         self.assertEqual(response_1.content, response_2.content)

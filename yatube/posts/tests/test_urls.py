@@ -68,10 +68,16 @@ class PostsURLTests(TestCase):
         зарегистрированного пользователя, но не автора.
         """
         urls_list = {
+            reverse(
+                'posts:post_edit',
+                kwargs={'post_id': self.post.pk}
+            ): HTTPStatus.FOUND,
             '/create/': HTTPStatus.OK,
-            '/posts/1/edit/': HTTPStatus.FOUND,
             '/unexpected/': HTTPStatus.NOT_FOUND,
-            '/posts/1/comment/': HTTPStatus.FOUND,
+            reverse(
+                'posts:add_comment',
+                kwargs={'post_id': self.post.pk}
+            ): HTTPStatus.FOUND,
         }
         for address, status_code in urls_list.items():
             with self.subTest(address=address):
@@ -87,9 +93,18 @@ class PostsURLTests(TestCase):
         """Странице address соответствует шаблон для гостя."""
         urls_list = {
             '/': 'posts/index.html',
-            '/group/test_slug/': 'posts/group_list.html',
-            '/profile/Lev/': 'posts/profile.html',
-            '/posts/1/': 'posts/post_detail.html',
+            reverse(
+                'posts:group_list',
+                kwargs={'slug': self.group.slug}
+            ): 'posts/group_list.html',
+            reverse(
+                'posts:profile',
+                kwargs={'username': self.user.username}
+            ): 'posts/profile.html',
+            reverse(
+                'posts:post_detail',
+                kwargs={'post_id': self.post.pk}
+            ): 'posts/post_detail.html',
             '/create/': 'posts/create_post.html',
         }
         for address, template in urls_list.items():
@@ -100,7 +115,10 @@ class PostsURLTests(TestCase):
     def test_template_exists_for_author(self):
         """Странице address соответствует шаблон для автора."""
         urls_list = {
-            '/posts/1/edit/': 'posts/create_post.html',
+            reverse(
+                'posts:post_edit',
+                kwargs={'post_id': self.post.pk}
+            ): 'posts/create_post.html',
         }
         for address, template in urls_list.items():
             with self.subTest(address=address):
