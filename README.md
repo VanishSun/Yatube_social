@@ -1,3 +1,28 @@
-# hw05_final
+# yatube_project
 
-[![CI](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml)
+## Описание
+Социальная сеть для блогеров
+
+## Особенности
+- Создание личной страницы с именем и уникальным адресом
+- Создание, отправка и просмотр записей в сообществах
+- Модерирование записей
+- Блокировка пользователей
+- Просмотр страниц других пользователей с возможностью подписки на них и комментированием записей
+
+## Технологии
+- Python 3.7
+- Django 2.2.19
+
+## Запуск проекта в режиме Dev
+- Установка и активация виртуального окружения
+- Установите зависимости из файла requirements.txt
+``` pip install -r requirements.txt ```
+- В папке с файлом manage.py выполните команду:
+``` python3 manage.py runserver ```
+
+## License
+MIT
+
+### Author
+Ivan Verozub
