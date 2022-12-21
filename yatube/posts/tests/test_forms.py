@@ -114,15 +114,7 @@ class PostFormTests(TestCase):
             post.group.pk, self.group.pk
         )
         self.assertEqual(post.text, form_data['text'])
-        # В данном случае у меня был self.user переопределен в строке 43,
-        # поэтому я не мог через self.user обращаться к cls.user в setUpClass()
-        # создавался пост автором Lev, а self.user был HasNoName
-        # чтобы этого измежать я пепеназвал self.user в self.user_no_author
-        # до этого тест падал: AssertionError: <User: Lev> != <User: HasNoName>
         self.assertEqual(post.author, self.user)
-        # ПРЕДЫДУЩИЙ КОММЕНТ:
-        # нет, тут все верно. я сравниваю с автором - а self.user -
-        # у меня другой залогиненый пользователь. строка 43
         self.assertEqual(post.image, 'posts/small_1.gif')
 
     def test_edit_post_form_with_new_group(self):
