@@ -1,4 +1,4 @@
-# yatube_project
+# Yatube social network
 
 ## Описание
 Социальная сеть для блогеров
