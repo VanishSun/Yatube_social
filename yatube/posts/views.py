@@ -33,9 +33,6 @@ def profile(request, username):
     following = Follow.objects.filter(
         user=request.user.id, author=author
     )
-    # user.id не получается избавиться - иначе падают тесты
-    # test_profile_paginator_view & test_profile_view_get
-    # c ошибкой TypeError: 'AnonymousUser' object is not iterable
     page_obj = paginations(request, posts)
     context = {
         'author': author,
