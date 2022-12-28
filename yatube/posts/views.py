@@ -115,9 +115,6 @@ def add_comment(request, post_id):
 def follow_index(request):
     posts = Post.objects.select_related('author', 'group').filter(
         author__following__user=request.user)
-    # я так и не понял как тут заменить author__following__user на user
-    # если ставить user - страница ломается, т.к. у модели Post
-    # нет user поля
     page_obj = paginations(request, posts)
     context = {
         'page_obj': page_obj,
